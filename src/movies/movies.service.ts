@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MovieEntity } from './entities/movie.entity';
+import { CreateMovieDto } from './dto/create-movie.dto';
+import { EditMovieDto } from './dto/edit-movie.dto';
 
 @Injectable()
 export class MoviesService {
@@ -19,22 +21,19 @@ export class MoviesService {
     );
   }
 
-  create({ id, title, year }: { id: string; title: string; year: number }) {
+  create(dto: CreateMovieDto) {
     this.movies.push({
       id: 'new',
-      title,
-      year,
+      ...dto,
     } as MovieEntity);
     return true;
   }
 
-  edit({ id, title, year }: { id: string; title: string; year: number }) {
+  edit(dto: EditMovieDto) {
     this.movies = this.movies.map((item) =>
-      item.id == id
+      item.id == dto.id
         ? ({
-            id: 'new',
-            title,
-            year,
+            ...dto,
           } as MovieEntity)
         : item
     );
